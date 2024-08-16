@@ -2,7 +2,7 @@
 
 namespace SerializeDZ
 {
-	internal class IniWriter
+	public class IniWriter
 	{
 		private StringBuilder builder = new StringBuilder();
 

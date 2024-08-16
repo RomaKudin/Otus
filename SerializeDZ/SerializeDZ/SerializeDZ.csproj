@@ -74,9 +74,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\IniComment.cs" />
-    <Compile Include="Attributes\IniIgnore.cs" />
-    <Compile Include="Attributes\IniProperty.cs" />
     <Compile Include="IniConverter.cs" />
     <Compile Include="IniReader.cs" />
     <Compile Include="IniTypeReflector.cs" />

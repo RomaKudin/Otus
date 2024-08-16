@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace SerializeDZ
 {
-	internal class IniReader
+	public static class IniReader
 	{
 		private const string SECTION_REGEX = @"\[(.*)\]";
 		private const string ATTRIBUTE_REGEX = @"(.*)=(.*)";
 
-		public bool TryGetSection(string line, out string value)
+		public static bool TryGetSection(string line, out string value)
 		{
 			Match sectionMatch = Regex.Match(line, SECTION_REGEX);
 			value = null;
@@ -21,12 +21,12 @@ namespace SerializeDZ
 			return true;
 		}
 
-		public bool IsSection(string line)
+		public static bool IsSection(string line)
 		{
 			return Regex.IsMatch(line, SECTION_REGEX);
 		}
 
-		public IEnumerable<KeyValuePair<string, string>> GetAttributes(string line)
+		public static IEnumerable<KeyValuePair<string, string>> GetAttributes(string line)
 		{
 			MatchCollection matches = Regex.Matches(line, ATTRIBUTE_REGEX);
 			foreach (Match att in matches)
