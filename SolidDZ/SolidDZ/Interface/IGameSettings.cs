@@ -6,7 +6,7 @@
 	public interface IGameSettings
 	{
 		/// <summary>
-		/// Установить настрокйик.
+		/// Установить настройки.
 		/// </summary>
 		/// <param name="maxAttempts">Максимальное число попыток.</param>
 		/// <param name="numberRange">Диапозон.</param>
