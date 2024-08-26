@@ -41,20 +41,18 @@ namespace SolidDZ
 			return _attempts >= _settings.GetMaxAttempts() || TargetNumber == number;
 		}
 
-		public void StartGame(IWriter write, IPrinter print)
+		public void StartGame(MyConsolePrinter print)
 		{
 			try
 			{
 				TargetNumber = _numberGenerator.GenerateNumber();
-				print.Print($"Угадайте число от {_settings.GetStartRange()} до {_settings.GetEndRange()} за {_settings.GetMaxAttempts()} попыток");
+				print.StartGame(_settings.GetStartRange(), _settings.GetEndRange(), _settings.GetMaxAttempts());
 				int guess = -1;
 
 				do
 				{
-
-					print.Print("Ваш вариант: ", false);
-					guess = write.GetReadLine();
-					print.Print("");
+					print.PrintOption();
+					guess = print.GetReadLine();
 					var result = Guess(guess);
 					print.Print(result);
 
@@ -67,12 +65,12 @@ namespace SolidDZ
 
 				if (IsGameOver(guess) && Guess(guess) != Enum.Guess.Success)
 				{
-					print.Print($"Вы проиграли. Загаданное число было {TargetNumber}");
+					print.PrintGameOver(TargetNumber);
 				}
 			}
 			catch (Exception e)
 			{
-				print.Print($"Ошибка {e.Message}");
+				print.Print(e.Message);
 			}
 		}
 	}
