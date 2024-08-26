@@ -1,4 +1,5 @@
-﻿using SolidDZ.Interface;
+﻿using SolidDZ.Enum;
+using SolidDZ.Interface;
 using System.ComponentModel;
 
 namespace SolidDZ
@@ -9,28 +10,29 @@ namespace SolidDZ
 	public class GuessingGame
 	{
 		private readonly GameSettings _settings;
-		public int TargetNumber { get; init; }
+		private INumberGenerator _numberGenerator;
+		private int TargetNumber { get; set; }
 		private int _attempts;
 		public GuessingGame(GameSettings settings, INumberGenerator numberGenerator)
 		{
 			_settings = settings;
-			TargetNumber = numberGenerator.GenerateNumber();
+			_numberGenerator = numberGenerator;
 		}
 		
-		private string Guess(int number)
+		private Guess Guess(int number)
 		{
 			_attempts++;
 			if (number < TargetNumber)
 			{
-				return "Больше";
+				return Enum.Guess.Greater;
 			}
 			else if (number > TargetNumber)
 			{
-				return "Меньше";
+				return Enum.Guess.Less;
 			}
 			else
 			{
-				return "Угадали!";
+				return Enum.Guess.Success;
 			}
 		}
 
@@ -39,34 +41,38 @@ namespace SolidDZ
 			return _attempts >= _settings.GetMaxAttempts() || TargetNumber == number;
 		}
 
-		public void StartGame(IWriter write, IPrinter print) 
+		public void StartGame(IWriter write, IPrinter print)
 		{
-			print.Print($"Угадайте число от {_settings.GetStartRange()} до {_settings.GetEndRange()} за {_settings.GetMaxAttempts()} попыток");
-			int guess = -1;
-
-			do
+			try
 			{
-				try
+				TargetNumber = _numberGenerator.GenerateNumber();
+				print.Print($"Угадайте число от {_settings.GetStartRange()} до {_settings.GetEndRange()} за {_settings.GetMaxAttempts()} попыток");
+				int guess = -1;
+
+				do
 				{
+
 					print.Print("Ваш вариант: ", false);
 					guess = write.GetReadLine();
 					print.Print("");
-					string result = Guess(guess);
+					var result = Guess(guess);
 					print.Print(result);
-					if (result == "Угадали!")
+
+					if (result == Enum.Guess.Success)
 					{
 						break;
 					}
-				}
-				catch (FormatException)
-				{
-					print.Print("Пожалуйста, введите число.");
-				}
-			} while (!IsGameOver(guess));
 
-			if (IsGameOver(guess) && Guess(guess) != "Угадали!")
+				} while (!IsGameOver(guess)) ;
+
+				if (IsGameOver(guess) && Guess(guess) != Enum.Guess.Success)
+				{
+					print.Print($"Вы проиграли. Загаданное число было {TargetNumber}");
+				}
+			}
+			catch (Exception e)
 			{
-				print.Print($"Вы проиграли. Загаданное число было {TargetNumber}");
+				print.Print($"Ошибка {e.Message}");
 			}
 		}
 	}
