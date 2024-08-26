@@ -43,12 +43,11 @@ namespace SolidDZ
 
 		public void StartGame(MyConsolePrinter print)
 		{
+			TargetNumber = _numberGenerator.GenerateNumber();
+			print.StartGame(_settings.GetStartRange(), _settings.GetEndRange(), _settings.GetMaxAttempts());
+			int guess = -1;
 			try
 			{
-				TargetNumber = _numberGenerator.GenerateNumber();
-				print.StartGame(_settings.GetStartRange(), _settings.GetEndRange(), _settings.GetMaxAttempts());
-				int guess = -1;
-
 				do
 				{
 					print.PrintOption();
@@ -60,17 +59,18 @@ namespace SolidDZ
 					{
 						break;
 					}
-
-				} while (!IsGameOver(guess)) ;
-
-				if (IsGameOver(guess) && Guess(guess) != Enum.Guess.Success)
-				{
-					print.PrintGameOver(TargetNumber);
-				}
+				} while (!IsGameOver(guess));
 			}
 			catch (Exception e)
 			{
 				print.Print(e.Message);
+				print.PrintGameOver(TargetNumber);
+				return;
+			}
+
+			if (IsGameOver(guess) && Guess(guess) != Enum.Guess.Success)
+			{
+				print.PrintGameOver(TargetNumber);
 			}
 		}
 	}
