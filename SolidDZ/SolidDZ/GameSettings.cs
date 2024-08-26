@@ -5,16 +5,17 @@ namespace SolidDZ
 	/// <summary>
 	/// Класс с настройками
 	/// </summary>
-	public class GameSettings : IGameSettings
+	public class GameSettings
 	{
 		private int _maxAttempts;
-		private int _numberRange;
+		private int _startRange;
+		private int _endRange;
 
-
-		public void SetSettings(int maxAttempts, int numberRange)
+		public GameSettings(int maxAttempts, int startRange, int endRange)
 		{
 			_maxAttempts = maxAttempts;
-			_numberRange = numberRange;
+			_startRange = startRange;
+			_endRange = endRange;
 		}
 
 		public int GetMaxAttempts()
@@ -22,9 +23,14 @@ namespace SolidDZ
 			return _maxAttempts;
 		}
 
-		public int GetNumberRange()
+		public int GetStartRange()
 		{
-			return _numberRange;
+			return _startRange;
+		}
+
+		public int GetEndRange()
+		{
+			return _endRange;
 		}
 	}
 }

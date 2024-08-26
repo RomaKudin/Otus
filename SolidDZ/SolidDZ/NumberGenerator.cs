@@ -1,4 +1,6 @@
 ﻿using SolidDZ.Interface;
+using System;
+using System.Security.Cryptography;
 
 namespace SolidDZ
 {
@@ -7,11 +9,36 @@ namespace SolidDZ
 	/// </summary>
 	public class NumberGenerator : INumberGenerator
 	{
-		private readonly Random _random = new Random();
+		protected int _startRange;
 
-		public int GenerateNumber(int numberRange)
+		protected int _endRange;
+
+		public NumberGenerator(int startRange, int endRange)
 		{
-			return _random.Next(1, numberRange + 1);
+			_startRange = startRange;
+			_endRange = endRange;
+		}
+
+		public virtual int GenerateNumber()
+		{
+			Random _random = new Random();
+			return _random.Next(_startRange, _endRange + 1);
+		}
+	}
+
+
+	/// <summary>
+	/// Класс для генерации случайного числа
+	/// </summary>
+	public class AdvancedNumberGenerator : NumberGenerator
+	{
+		public AdvancedNumberGenerator(int startRange, int endRange) : base(startRange, endRange)
+		{
+		}
+
+		public override int GenerateNumber()
+		{
+			return RandomNumberGenerator.GetInt32(_startRange, _endRange + 1);
 		}
 	}
 }

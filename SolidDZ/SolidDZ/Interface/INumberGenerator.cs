@@ -8,8 +8,7 @@
 		/// <summary>
 		/// Сгенерировать число.
 		/// </summary>
-		/// <param name="numberRange">Диапозон.</param>
 		/// <returns>Возвращает сгенерированное число.</returns>
-		public int GenerateNumber(int numberRange);
+		public int GenerateNumber();
 	}
 }
