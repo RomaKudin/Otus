@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace TaskDZ
 {
@@ -6,14 +7,29 @@ namespace TaskDZ
 	{
 		static async Task Main(string[] args)
 		{
-			string directoryPath = Directory.GetCurrentDirectory();
+			string directoryPath = @"..\..\..\Files";
+
+			string[] filePaths = { @"..\..\..\Files\TestFile1.txt", @"..\..\..\Files\TestFile2.txt", @"..\..\..\Files\TestFile3.txt" };
+			List<Task<int>> tasks = new List<Task<int>>();
 
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
 
+			foreach (var filePath in filePaths)
+			{
+				tasks.Add(CountSpacesInFileAsync(filePath));
+			}
+
+			int[] results = await Task.WhenAll(tasks);
 			int totalSpaces = await CountSpacesInDirectoryAsync(directoryPath);
 
 			stopwatch.Stop();
+
+			foreach (var content in results)
+			{
+				Console.WriteLine(content);
+			}
+
 			Console.WriteLine($"Кол-во пробелов в файлах из директории: {totalSpaces}");
 			Console.WriteLine($"Затраченное время: {stopwatch.ElapsedMilliseconds} мс");
 		}
