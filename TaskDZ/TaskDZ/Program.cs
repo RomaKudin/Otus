@@ -62,13 +62,18 @@ namespace TaskDZ
 		/// <returns>Возвращает кол-во пробелов в файле.</returns>
 		public static async Task<int> CountSpacesInFileAsync(string filePath)
 		{
-			int spaceCount = 0;
-			using (StreamReader reader = new StreamReader(filePath))
+			return await Task.Run(async () =>
 			{
-				string content = await reader.ReadToEndAsync();
-				spaceCount = content.Count(c => c == ' ');
-			}
-			return spaceCount;
+				Console.WriteLine($"Starting task on Thread ID: {Thread.CurrentThread.ManagedThreadId}");
+				int spaceCount = 0;
+				using (StreamReader reader = new StreamReader(filePath))
+				{
+					string content = await reader.ReadToEndAsync();
+					spaceCount = content.Count(c => c == ' ');
+				}
+				Console.WriteLine($"Finished task on Thread ID: {Thread.CurrentThread.ManagedThreadId}");
+				return spaceCount;
+			});
 		}
 
 		/// <summary>
